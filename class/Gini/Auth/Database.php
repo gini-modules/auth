@@ -11,8 +11,8 @@ class Database implements \Gini\Auth\Driver
     public function __construct(array $opt)
     {
         $this->options = $opt;
-        $this->db_name = $opt['database.name'];
-        $this->table = $opt['database.table'] ?: '_auth';
+        $this->db_name = $opt['database.name'] ?? null;
+        $this->table = !empty($opt['database.table']) ? $opt['database.table'] : '_auth';
 
         $db = \Gini\Database::db($this->db_name);
         $db->adjustTable(
@@ -25,7 +25,7 @@ class Database implements \Gini\Auth\Driver
                 'indexes' => [
                     'PRIMARY' => ['type'=>'primary', 'fields'=> ['username']],
                 ],
-                'engine' => $opt['database.engine']
+                'engine' => $opt['database.engine'] ?? null
             ]
         );
 
